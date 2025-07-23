@@ -16,19 +16,28 @@ def api_kaggle(datasets: list) -> None:
         )
     return
 
-def lendo_df():
+def ler_df() -> list:
     datasets = os.listdir('banco_de_dados')
-    dt = {}
+    dt = []
     for df in datasets:
-        caminho = os.path.join('banco_de_dados', df)
-        df = pd.read_csv(caminho)
-        nome = os.path.splitxt(df)[0]
-        dt[nome] = df
-
+        if df.endswith('.csv'):
+            caminho = os.path.join('banco_de_dados', df)
+            df = pd.read_csv(caminho)
+            dt.append(df)
     return dt
 
+def unir_df() -> None:
+    dt = ler_df()
+    dt[0]['names'] = dt[0]['Movie Name']
+
+    filmes = pd.merge(dt[0], dt[1], on = 'names')
+    filmes.to_csv('filmes.csv')
+
 datasets = [
-    '/ashpalsingh1525/imdb-movies-dataset',
-    '/willianoliveiragibin/10000-data-about-movies-1915-2023'
+    'ashpalsingh1525/imdb-movies-dataset',
+    'willianoliveiragibin/10000-data-about-movies-1915-2023'
+    
 ]
 
+api_kaggle(datasets)
+unir_df()
