@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import numpy as np
 from kaggle.api.kaggle_api_extended import KaggleApi
 
 def api_kaggle(datasets: list) -> None:
