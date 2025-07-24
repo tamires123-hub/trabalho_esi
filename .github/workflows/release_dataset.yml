@@ -26,7 +26,7 @@ jobs:
     - name: Criar kaggle.json a partir do segredo
       run: |
         mkdir -p ~/.kaggle
-        echo "${{ secrets.KAGGLE_JSON }}" > ~/.kaggle/kaggle.json
+        echo "${{ secrets.KG_TOKEN }}" > ~/.kaggle/kaggle.json
         chmod 600 ~/.kaggle/kaggle.json
 
     - name: Rodar pipeline Python
