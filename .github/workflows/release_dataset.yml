@@ -27,12 +27,12 @@ jobs:
       run: |
         mkdir -p ~/.kaggle
 
-        echo '${{ secrets.KG_TOKEN }}' > ~/.kaggle/kaggle.json
+        echo '${{ secrets.KAGGLE_TOKEN}}' > ~/.kaggle/kaggle.json
         chmod 600 ~/.kaggle/kaggle.json
         cat ~/.kaggle/kaggle.json
     - name: Debug segredo
       run: 
-        echo "Segredo tem conteúdo? [${{ secrets.KG_TOKEN != '' }}]"
+        echo "Segredo tem conteúdo? [${{ secrets.KAGGLE_TOKEN != '' }}]"
 
     - name: Verificar se kaggle.json foi criado
       run: |
