@@ -30,6 +30,7 @@ jobs:
         echo '${{ secrets.KAGGLE_TOKEN }}' > ~/.kaggle/kaggle.json
         chmod 600 ~/.kaggle/kaggle.json
         cat ~/.kaggle/kaggle.json
+
     - name: Debug segredo
       run: 
         echo "Segredo tem conteúdo? [${{ secrets.KAGGLE_TOKEN != '' }}]"
@@ -45,14 +46,16 @@ jobs:
 
     - name: Obter data atual
       id: data_atual
-      run: echo "data_release=Release - $(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+      run: echo "data_release=release-$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
 
-    - name: Criar Release com dataset_filmes_class.csv
+
+    - name: Criar Release com daStaset_filmes_class.csv
       id: create_release
       uses: softprops/action-gh-release@v1
       with:
-        name: ${{ steps.data_atual.outputs.data_release }}
-        tag_name: ${{ steps.data_atual.outputs.data_release }}
+        name: "Release $(date +'%Y-%m-%d')"  # nome da release pode ter espaços
+        tag_name: ${{ steps.data_atual.outputs.data_release }}  # tag sem espaços
         files: dataset_filmes_class.csv
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
