@@ -1,9 +1,9 @@
 name: Atualizar dataset e criar release
 
 on:
-  workflow_dispatch:   # permite rodar manualmente
+  workflow_dispatch:
   schedule:
-    - cron: '0 5 * * 1'  # roda toda segunda-feira às 5h UTC
+    - cron: '0 5 * * 1'
 
 jobs:
   build-and-release:
@@ -30,7 +30,7 @@ jobs:
         chmod 600 ~/.kaggle/kaggle.json
 
     - name: Rodar pipeline Python
-      run: python pipeline_dados.py   # substitua pelo nome real do seu script
+      run: python pipeline_dados.py
 
     - name: Obter data atual
       id: data_atual
