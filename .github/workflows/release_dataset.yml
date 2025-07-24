@@ -3,7 +3,7 @@ name: Atualizar dataset e criar release
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 5 * * 1'  # roda toda segunda-feira às 05h
+    - cron: '0 5 * * 1'  # toda segunda às 5h UTC
 
 jobs:
   build-and-release:
@@ -32,14 +32,23 @@ jobs:
     - name: Rodar pipeline Python
       run: python pipeline_dados.py
 
+    - name: Criar e enviar tag automática única
+      id: tag
+      run: |
+        TAG_NAME="release-$(date +'%Y-%m-%d-%H%M%S')"
+        echo "TAG_NAME=$TAG_NAME" >> $GITHUB_OUTPUT
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git tag $TAG_NAME
+        git push origin $TAG_NAME
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Criar Release automática
       uses: softprops/action-gh-release@v1
       with:
-        name: "Release automática"
-        tag_name: "ultima-release"
+        name: ${{ steps.tag.outputs.TAG_NAME }}
+        tag_name: ${{ steps.tag.outputs.TAG_NAME }}
         files: dataset_filmes_class.csv
-        overwrite: true
-        prerelease: false
-        draft: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
