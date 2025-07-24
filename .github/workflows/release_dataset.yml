@@ -38,6 +38,7 @@ jobs:
         name: "Release automática"
         tag_name: "ultima-release"
         files: dataset_filmes_class.csv
+        overwrite: true
         prerelease: false
         draft: false
       env:
