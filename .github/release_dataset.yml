@@ -1,0 +1,40 @@
+name: Atualizar dataset e criar release
+
+on:
+  workflow_dispatch:   # permite rodar manualmente
+  schedule:
+    - cron: '0 5 * * 1'  # roda toda segunda-feira às 5h UTC (ajuste conforme quiser)
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout do código
+      uses: actions/checkout@v3
+
+    - name: Configurar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Instalar dependências
+      run: |
+        python -m pip install --upgrade pip
+        pip install pandas numpy kaggle requests
+
+    - name: Criar arquivo kaggle.json a partir do segredo
+      run: |
+        echo "${{ secrets.KAGGLE_JSON }}" > ~/.kaggle/kaggle.json
+        chmod 600 ~/.kaggle/kaggle.json
+
+    - name: Rodar pipeline Python
+      run: python pipeline_dados.py   # substitua pelo nome real do seu script
+
+    - name: Criar Release com dataset_filmes_class.csv
+      id: create_release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: dataset_filmes_class.csv
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
